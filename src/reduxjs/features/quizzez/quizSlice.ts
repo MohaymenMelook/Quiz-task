@@ -36,11 +36,11 @@ const quizSlice = createSlice({
       };
       state.quizzes.push(newQuiz);
     },
-    editQuiz: (
+    updateQuiz: (
       state,
       action: PayloadAction<{ quizId: number; updatedQuiz: Partial<IQuiz> }>
     ) => {
-      const { quizId, updatedQuiz } = action.payload;
+      const { updatedQuiz, quizId } = action.payload;
       const quizIndex = state.quizzes.findIndex((quiz) => quiz.id === quizId);
       if (quizIndex !== -1) {
         state.quizzes[quizIndex] = {
@@ -114,7 +114,7 @@ const quizSlice = createSlice({
 
 export const {
   addQuiz,
-  editQuiz,
+  updateQuiz,
   deleteQuiz,
   addQuestion,
   updateQuestion,

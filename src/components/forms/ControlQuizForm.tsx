@@ -1,6 +1,6 @@
 "use client";
 import { IQuiz, IQuizFormInputs } from "@/interfaces/quiz.interface";
-import { addQuiz } from "@/reduxjs/features/quizzez/quizSlice";
+import { addQuiz, updateQuiz } from "@/reduxjs/features/quizzez/quizSlice";
 import { useAppDispatch } from "@/reduxjs/hooks";
 import React from "react";
 import { Button, Form, Modal } from "react-bootstrap";
@@ -16,6 +16,8 @@ const ControlQuizForm: React.FC<ControlQuizFormProps> = ({
   quiz,
 }) => {
   const dispatch = useAppDispatch();
+  const isEditingMode = !!quiz;
+
   const {
     register,
     handleSubmit,
@@ -32,7 +34,16 @@ const ControlQuizForm: React.FC<ControlQuizFormProps> = ({
   });
 
   const onSubmit: SubmitHandler<IQuizFormInputs> = (data) => {
-    dispatch(addQuiz(data));
+    if (isEditingMode) {
+      dispatch(
+        updateQuiz({
+          updatedQuiz: data,
+          quizId: quiz?.id as number,
+        })
+      );
+    } else {
+      dispatch(addQuiz(data));
+    }
     reset();
     handleClose();
   };
